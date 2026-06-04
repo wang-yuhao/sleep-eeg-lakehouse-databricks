@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Sleep-EDF Bronze Schema",
+  "description": "Expected schema for raw Sleep-EDF files ingested into Bronze layer",
+  "type": "object",
+  "properties": {
+    "path": {
+      "type": "string",
+      "description": "Full path to the EDF file in cloud storage",
+      "pattern": "^.*\\.edf$"
+    },
+    "content": {
+      "type": "string",
+      "format": "binary",
+      "description": "Binary content of the EDF file (Base64 encoded)"
+    },
+    "modificationTime": {
+      "type": "string",
+      "format": "date-time",
+      "description": "File modification timestamp"
+    },
+    "ingestion_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when file was ingested into Bronze layer"
+    },
+    "subject_id": {
+      "type": "string",
+      "pattern": "^SC\\d{4}$",
+      "description": "Subject identifier extracted from filename (e.g., SC4001)",
+      "examples": ["SC4001", "SC4002", "SC4011"]
+    },
+    "file_type": {
+      "type": "string",
+      "enum": ["PSG", "Hypnogram", "Unknown"],
+      "description": "Type of EDF file: PSG (polysomnography) or Hypnogram (sleep stages)"
+    },
+    "file_size_mb": {
+      "type": "number",
+      "minimum": 0,
+      "description": "File size in megabytes"
+    }
+  },
+  "required": ["path", "content", "subject_id", "file_type"],
+  "additionalProperties": false
+}
